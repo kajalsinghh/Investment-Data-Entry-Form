@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Customer Investment Form</title>
+    <style>
+        /* CSS styles */
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #920202, #8a27169a, #e4e41a);
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .container {
+            background: linear-gradient(135deg, #fcef3b93, #f79335a4, #e406068a);
+            padding: 60px;
+            border-radius: 12px;
+            box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+            max-width: 500px;
+            width: 100%;
+            text-align: center;
+        }
+        h2 {
+            color: #fff;
+            margin-bottom: 30px;
+        }
+        label {
+            display: block;
+            margin-bottom: 12px;
+            font-weight: bold;
+            color: #fff;
+            text-align: left;
+        }
+        input[type="text"],
+        input[type="number"] {
+            width: calc(100% - 24px);
+            padding: 14px;
+            margin-bottom: 24px;
+            border: 1px solid #ccc;
+            border-radius: 6px;
+            transition: border-color 0.3s;
+            font-size: 16px;
+        }
+        input[type="text"]:focus,
+        input[type="number"]:focus {
+            border-color: #007bff;
+            outline: none;
+        }
+        input[type="submit"] {
+            width: calc(100% - 24px);
+            padding: 16px;
+            border: none;
+            border-radius: 6px;
+            background-color: #750101;
+            color: #fff;
+            font-size: 18px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        input[type="submit"]:hover {
+            background-color: #63101063;
+        }
+        /* Message box styles */
+        .message {
+            background-color: #4CAF50; /* Green */
+            color: white;
+            text-align: center;
+            padding: 10px;
+            border-radius: 12px;
+            margin-top: 20px;
+        }
+    </style>
+    <!-- Include jQuery library -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+</head>
+<body>
+
+    <div class="container">
+        <h2>Customer Investment Form</h2>
+        <form id="investmentForm">
+            <label for="name">Name:</label>
+            <input type="text" id="name" name="name" required>
+            
+            <label for="transaction_id">Transaction ID:</label>
+            <input type="text" id="transaction_id" name="transaction_id" required>
+            
+            <label for="investment_amount">Investment Amount:</label>
+            <input type="number" id="investment_amount" name="investment_amount" required>
+            
+            <input type="submit" value="Submit">
+        </form>
+        <div id="messageBox" class="message" style="display: none;"></div>
+        <div id="responseContainer"></div>
+    </div>
+
+    <script>
+        $(document).ready(function() {
+            $('#investmentForm').submit(function(event) {
+                event.preventDefault();
+                var formData = $(this).serialize();
+                $.ajax({
+                    url: 'process_form.php',
+                    method: 'POST',
+                    data: formData,
+                    success: function(response) {
+                        // Display success message
+                        $('#messageBox').html(response).fadeIn().delay(3000).fadeOut();
+                        // Remove data from container after message shown
+                        $('#responseContainer').html('');
+                        // Refresh page after a delay
+                        setTimeout(function() {
+                            location.reload();
+                        }, 3000);
+                    },
+                    error: function(xhr, status, error) {
+                        console.error(xhr.responseText);
+                    }
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>
